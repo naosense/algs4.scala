@@ -9,23 +9,24 @@ class Queue[E] extends Iterable[E] {
   case class Elm(e: E, var next: Node) extends Node
   case object End extends Node
 
-  private var first: Node = End
+  // 避免与父类中的变量重名
+  private var fst: Node = End
   private var lst: Node = End
   private var n = 0
 
   def enqueue(e: E): Unit = {
     val oldlast = lst
     lst = Elm(e, End)
-    if (isEmpty) first = lst
+    if (isEmpty) fst = lst
     else oldlast.asInstanceOf[Elm].next = lst
     n = n + 1
   }
 
   def dequeue(): E = {
-    val item = (first: @unchecked) match {
+    val item = (fst: @unchecked) match {
       case Elm(e, _) => e
     }
-    first = first.asInstanceOf[Elm].next
+    fst = fst.asInstanceOf[Elm].next
     if (isEmpty) lst = End
     n = n - 1
     item
@@ -37,7 +38,7 @@ class Queue[E] extends Iterable[E] {
 
   override def className: String = "Queue"
 
-  override def iterator: Iterator[E] = new LinkedIterator(first)
+  override def iterator: Iterator[E] = new LinkedIterator(fst)
 
   private class LinkedIterator(var current: Node) extends Iterator[E] {
     override def hasNext: Boolean = current ne End
