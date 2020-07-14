@@ -49,7 +49,7 @@ object ResizingArrayBag {
   }
 
   def main(args: Array[String]): Unit = {
-    val bag = ResizingArrayBag(1, 2, 3,4,5)
+    val bag = ResizingArrayBag(1, 2, 3, 4, 5)
     println(bag)
   }
 }
