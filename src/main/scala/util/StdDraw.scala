@@ -1,7 +1,7 @@
 package util
 
 import java.awt.event.{ActionEvent, ActionListener, KeyEvent, KeyListener, MouseEvent, MouseListener, MouseMotionListener}
-import java.awt.geom.{Arc2D, Ellipse2D, Line2D, Point2D, Rectangle2D}
+import java.awt.geom.{Arc2D, Ellipse2D, GeneralPath, Line2D, Point2D, Rectangle2D}
 import java.awt.image.{BufferedImage, DirectColorModel}
 import java.awt.{BasicStroke, Color, Component, FileDialog, Font, Graphics, Graphics2D, Image, MediaTracker, RenderingHints, Toolkit}
 import java.io.{File, IOException}
@@ -34,12 +34,12 @@ import javax.swing.{ImageIcon, JFrame, JLabel, JMenu, JMenuBar, JMenuItem, KeySt
  * public class TestStdDraw {
  *  public static void main(String[] args) {
  *             StdDraw.setPenRadius(0.05);
- *            StdDraw.setPenColor(StdDraw.BLUE);
+ *             StdDraw.setPenColor(StdDraw.BLUE);
  *             StdDraw.point(0.5, 0.5);
  *             StdDraw.setPenColor(StdDraw.MAGENTA);
  *             StdDraw.line(0.2, 0.2, 0.8, 0.2);
  *   }
- *   }
+ * }
  * }}}
  *
  * If you compile and execute the program, you should see a window
@@ -108,15 +108,14 @@ import javax.swing.{ImageIcon, JFrame, JLabel, JMenu, JMenuBar, JMenuItem, KeySt
  * <li> [[StdDraw#filledPolygon(double[] x, double[] y)]]
  * </ul>
  * <p>
- * The points in the polygon are ({@code x[i]}, {@code y[i]}).
+ * The points in the polygon are `x[i]`, `y[i]`).
  * For example, the following code fragment draws a filled diamond
  * with vertices (0.1, 0.2), (0.2, 0.3), (0.3, 0.2), and (0.2, 0.1):
- * <pre>
+ * {{{
  * double[] x = { 0.1, 0.2, 0.3, 0.2 };
  * double[] y = { 0.2, 0.3, 0.2, 0.1 };
- *   StdDraw.filledPolygon(x, y);
- * </pre>
- * <p>
+ * StdDraw.filledPolygon(x, y);
+ * }}}
  * <b>Pen size.</b>
  * The pen is circular, so that when you set the pen radius to <em>r</em>
  * and draw a point, you get a circle of radius <em>r</em>. Also, lines are
@@ -127,10 +126,10 @@ import javax.swing.{ImageIcon, JFrame, JLabel, JMenu, JMenuBar, JMenuItem, KeySt
  * you will be able to see individual circles, but if you draw 200 such
  * points, the result will look like a line.
  * <ul>
- * <li> {@link #setPenRadius(double radius)}
+ * <li> [[StdDraw#setPenRadius(double radius)]]
  * </ul>
  * <p>
- * For example, {@code StdDraw.setPenRadius(0.025)} makes
+ * For example, `StdDraw.setPenRadius(0.025)` makes
  * the thickness of the lines and the size of the points to be five times
  * the 0.005 default.
  * To draw points with the minimum possible radius (one pixel on typical
@@ -141,22 +140,22 @@ import javax.swing.{ImageIcon, JFrame, JLabel, JMenu, JMenuBar, JMenuItem, KeySt
  * the current pen color. By default, it is black.
  * You can change the pen color with the following methods:
  * <ul>
- * <li> {@link #setPenColor(int red, int green, int blue)}
- * <li> {@link #setPenColor(Color color)}
+ * <li> [[StdDraw#setPenColor(int red, int green, int blue)]]
+ * <li> [[StdDraw#setPenColor(Color color)]]
  * </ul>
  * <p>
  * The first method allows you to specify colors using the RGB color system.
  * This <a href = "http://johndyer.name/lab/colorpicker/">color picker</a>
  * is a convenient way to find a desired color.
  * The second method allows you to specify colors using the
- * {@link Color} data type that is discussed in Chapter 3. Until then,
+ * `Color` data type that is discussed in Chapter 3. Until then,
  * you can use this method with one of these predefined colors in standard drawing:
- * {@link #BLACK}, {@link #BLUE}, {@link #CYAN}, {@link #DARK_GRAY}, {@link #GRAY},
- * {@link #GREEN}, {@link #LIGHT_GRAY}, {@link #MAGENTA}, {@link #ORANGE},
- * {@link #PINK}, {@link #RED}, {@link #WHITE}, {@link #YELLOW},
- * {@link #BOOK_BLUE}, {@link #BOOK_LIGHT_BLUE}, {@link #BOOK_RED}, and
- * {@link #PRINCETON_ORANGE}.
- * For example, {@code StdDraw.setPenColor(StdDraw.MAGENTA)} sets the
+ * [[StdDraw#BLACK]], [[StdDraw#BLUE]], [[StdDraw#CYAN]], [[StdDraw#DARK_GRAY]], [[StdDraw#GRAY]],
+ * [[StdDraw#GREEN]], [[StdDraw#LIGHT_GRAY]], [[StdDraw#MAGENTA]], [[StdDraw#ORANGE]],
+ * [[StdDraw#PINK]], [[StdDraw#RED]], [[StdDraw#WHITE]], [[StdDraw#YELLOW]],
+ * [[StdDraw#BOOK_BLUE]], [[StdDraw#BOOK_LIGHT_BLUE]], [[StdDraw#BOOK_RED]], and
+ * [[StdDraw#PRINCETON_ORANGE]].
+ * For example, [[StdDraw.setPenColor(StdDraw.MAGENTA)]] sets the
  * pen color to magenta.
  * <p>
  * <b>Canvas size.</b>
@@ -164,14 +163,14 @@ import javax.swing.{ImageIcon, JFrame, JLabel, JMenu, JMenuBar, JMenuItem, KeySt
  * The canvas does not include the window title or window border.
  * You can change the size of the canvas with the following method:
  * <ul>
- * <li> {@link #setCanvasSize(int width, int height)}
+ * <li> [[StdDraw#setCanvasSize(int width, int height)]]
  * </ul>
  * <p>
  * This sets the canvas size to be <em>width</em>-by-<em>height</em> pixels.
  * It also erases the current drawing and resets the coordinate system,
  * pen radius, pen color, and font back to their default values.
  * Ordinarly, this method is called once, at the very beginning of a program.
- * For example, {@code StdDraw.setCanvasSize(800, 800)}
+ * For example, `StdDraw.setCanvasSize(800, 800)`
  * sets the canvas size to be 800-by-800 pixels.
  * <p>
  * <b>Canvas scale and coordinate system.</b>
@@ -179,15 +178,15 @@ import javax.swing.{ImageIcon, JFrame, JLabel, JMenu, JMenuBar, JMenuItem, KeySt
  * lower left and (1, 1) at upper right. You can change the default
  * coordinate system with the following methods:
  * <ul>
- * <li> {@link #setXscale(double xmin, double xmax)}
- * <li> {@link #setYscale(double ymin, double ymax)}
- * <li> {@link #setScale(double min, double max)}
+ * <li> [[StdDraw#setXscale(double xmin, double xmax)]]
+ * <li> [[StdDraw#setYscale(double ymin, double ymax)]]
+ * <li> [[StdDraw#setScale(double min, double max)]]
  * </ul>
  * <p>
  * The arguments are the coordinates of the minimum and maximum
  * <em>x</em>- or <em>y</em>-coordinates that will appear in the canvas.
  * For example, if you  wish to use the default coordinate system but
- * leave a small margin, you can call {@code StdDraw.setScale(-.05, 1.05)}.
+ * leave a small margin, you can call `StdDraw.setScale(-.05, 1.05)`.
  * <p>
  * These methods change the coordinate system for subsequent drawing
  * commands; they do not affect previous drawings.
@@ -198,10 +197,10 @@ import javax.swing.{ImageIcon, JFrame, JLabel, JMenu, JMenuBar, JMenuItem, KeySt
  * <b>Text.</b>
  * You can use the following methods to annotate your drawings with text:
  * <ul>
- * <li> {@link #text(double x, double y, String text)}
- * <li> {@link #text(double x, double y, String text, double degrees)}
- * <li> {@link #textLeft(double x, double y, String text)}
- * <li> {@link #textRight(double x, double y, String text)}
+ * <li> [[StdDraw#text(double x, double y, String text)]]
+ * <li> [[StdDraw#text(double x, double y, String text, double degrees)]]
+ * <li> [[StdDraw#textLeft(double x, double y, String text)]]
+ * <li> [[StdDraw#textRight(double x, double y, String text)]]
  * </ul>
  * <p>
  * The first two methods write the specified text in the current font,
@@ -212,10 +211,10 @@ import javax.swing.{ImageIcon, JFrame, JLabel, JMenu, JMenuBar, JMenuItem, KeySt
  * The default font is a Sans Serif font with point size 16.
  * You can use the following method to change the font:
  * <ul>
- * <li> {@link #setFont(Font font)}
+ * <li> [[StdDraw#setFont(Font font)]]
  * </ul>
  * <p>
- * You use the {@link Font} data type to specify the font. This allows you to
+ * You use the [[Font]] data type to specify the font. This allows you to
  * choose the face, size, and style of the font. For example, the following
  * code fragment sets the font to Arial Bold, 60 point.
  * <pre>
@@ -227,10 +226,10 @@ import javax.swing.{ImageIcon, JFrame, JLabel, JMenu, JMenuBar, JMenuItem, KeySt
  * <b>Images.</b>
  * You can use the following methods to add images to your drawings:
  * <ul>
- * <li> {@link #picture(double x, double y, String filename)}
- * <li> {@link #picture(double x, double y, String filename, double degrees)}
- * <li> {@link #picture(double x, double y, String filename, double scaledWidth, double scaledHeight)}
- * <li> {@link #picture(double x, double y, String filename, double scaledWidth, double scaledHeight, double degrees)}
+ * <li> [[StdDraw#picture(double x, double y, String filename)]]
+ * <li> [[StdDraw#picture(double x, double y, String filename, double degrees)]]
+ * <li> [[StdDraw#picture(double x, double y, String filename, double scaledWidth, double scaledHeight)]]
+ * <li> [[StdDraw#picture(double x, double y, String filename, double scaledWidth, double scaledHeight, double degrees)]]
  * </ul>
  * <p>
  * These methods draw the specified image, centered at (<em>x</em>, <em>y</em>).
@@ -243,7 +242,7 @@ import javax.swing.{ImageIcon, JFrame, JLabel, JMenu, JMenuBar, JMenuItem, KeySt
  * You save your image to a file using the <em>File → Save</em> menu option.
  * You can also save a file programatically using the following method:
  * <ul>
- * <li> {@link #save(String filename)}
+ * <li> [[StdDraw#save(String filename)]]
  * </ul>
  * <p>
  * The supported image formats are JPEG and PNG. The filename must have either the
@@ -254,13 +253,13 @@ import javax.swing.{ImageIcon, JFrame, JLabel, JMenu, JMenuBar, JMenuItem, KeySt
  * <b>Clearing the canvas.</b>
  * To clear the entire drawing canvas, you can use the following methods:
  * <ul>
- * <li> {@link #clear()}
- * <li> {@link #clear(Color color)}
+ * <li> [[StdDraw#clear()]]
+ * <li> [[StdDraw#clear(Color color)]]
  * </ul>
  * <p>
  * The first method clears the canvas to white; the second method
  * allows you to specify a color of your choice. For example,
- * {@code StdDraw.clear(StdDraw.LIGHT_GRAY)} clears the canvas to a shade
+ * `StdDraw.clear(StdDraw.LIGHT_GRAY)` clears the canvas to a shade
  * of gray.
  * <p>
  * <b>Computer animations and double buffering.</b>
@@ -268,21 +267,21 @@ import javax.swing.{ImageIcon, JFrame, JLabel, JMenu, JMenuBar, JMenuItem, KeySt
  * enabling computer animations.
  * The following methods control the way in which objects are drawn:
  * <ul>
- * <li> {@link #enableDoubleBuffering()}
- * <li> {@link #disableDoubleBuffering()}
- * <li> {@link #show()}
- * <li> {@link #pause(int t)}
+ * <li> [[StdDraw#enableDoubleBuffering()]]
+ * <li> [[StdDraw#disableDoubleBuffering()]]
+ * <li> [[StdDraw#show()]]
+ * <li> [[StdDraw#pause(int t)]]
  * </ul>
  * <p>
  * By default, double buffering is disabled, which means that as soon as you
  * call a drawing
- * method—such as {@code point()} or {@code line()}—the
+ * method—such as `point()` or `line()`—the
  * results appear on the screen.
  * <p>
- * When double buffering is enabled by calling {@link #enableDoubleBuffering()},
+ * When double buffering is enabled by calling [[StdDraw#enableDoubleBuffering()]],
  * all drawing takes place on the <em>offscreen canvas</em>. The offscreen canvas
  * is not displayed. Only when you call
- * {@link #show()} does your drawing get copied from the offscreen canvas to
+ * [[StdDraw#show()]] does your drawing get copied from the offscreen canvas to
  * the onscreen canvas, where it is displayed in the standard drawing window. You
  * can think of double buffering as collecting all of the lines, points, shapes,
  * and text that you tell it to draw, and then drawing them all
@@ -299,33 +298,33 @@ import javax.swing.{ImageIcon, JFrame, JLabel, JMenu, JMenuBar, JMenuItem, KeySt
  * <li> Wait for a short while.
  * </ul>
  * <p>
- * The {@link #clear()}, {@link #show()}, and {@link #pause(int t)} methods
+ * The [[StdDraw#clear()]], [[StdDraw#show()]], and [[StdDraw#pause(int t)]] methods
  * support the first, third, and fourth of these steps, respectively.
  * <p>
  * For example, this code fragment animates two balls moving in a circle.
- * <pre>
+ * {{{
  *   StdDraw.setScale(-2, +2);
  *   StdDraw.enableDoubleBuffering();
  *
- * for (double t = 0.0; true; t += 0.02) {
- * double x = Math.sin(t);
- * double y = Math.cos(t);
- *       StdDraw.clear();
- *       StdDraw.filledCircle(x, y, 0.05);
- *       StdDraw.filledCircle(-x, -y, 0.05);
- *       StdDraw.show();
- *       StdDraw.pause(20);
- * }
- * </pre>
+ *   for (double t = 0.0; true; t += 0.02) {
+ *   double x = Math.sin(t);
+ *   double y = Math.cos(t);
+ *         StdDraw.clear();
+ *         StdDraw.filledCircle(x, y, 0.05);
+ *         StdDraw.filledCircle(-x, -y, 0.05);
+ *         StdDraw.show();
+ *         StdDraw.pause(20);
+ *   }
+ * }}}
  * <p>
  * <b>Keyboard and mouse inputs.</b>
  * Standard drawing has very basic support for keyboard and mouse input.
  * It is much less powerful than most user interface libraries provide, but also much simpler.
  * You can use the following methods to intercept mouse events:
  * <ul>
- * <li> {@link #isMousePressed()}
- * <li> {@link #mouseX()}
- * <li> {@link #mouseY()}
+ * <li> [[StdDraw#isMousePressed()]]
+ * <li> [[StdDraw#mouseX()]]
+ * <li> [[StdDraw#mouseY()]]
  * </ul>
  * <p>
  * The first method tells you whether a mouse button is currently being pressed.
@@ -335,9 +334,9 @@ import javax.swing.{ImageIcon, JFrame, JLabel, JMenu, JMenuBar, JMenuItem, KeySt
  * to poll the mouse for its current state.
  * You can use the following methods to intercept keyboard events:
  * <ul>
- * <li> {@link #hasNextKeyTyped()}
- * <li> {@link #nextKeyTyped()}
- * <li> {@link #isKeyPressed(int keycode)}
+ * <li> [[StdDraw#hasNextKeyTyped()]]
+ * <li> [[StdDraw#nextKeyTyped()]]
+ * <li> [[StdDraw#isKeyPressed(int keycode)]]
  * </ul>
  * <p>
  * If the user types lots of keys, they will be saved in a list until you process them.
@@ -351,9 +350,9 @@ import javax.swing.{ImageIcon, JFrame, JLabel, JMenu, JMenuBar, JMenuItem, KeySt
  * You can use the following methods to access the current pen color, pen radius,
  * and font:
  * <ul>
- * <li> {@link #getPenColor()}
- * <li> {@link #getPenRadius()}
- * <li> {@link #getFont()}
+ * <li> [[StdDraw#getPenColor()]]
+ * <li> [[StdDraw#getPenRadius()]]
+ * <li> [[StdDraw#getFont()]]
  * </ul>
  * <p>
  * These methods are useful when you want to temporarily change a
@@ -365,11 +364,11 @@ import javax.swing.{ImageIcon, JFrame, JLabel, JMenu, JMenuBar, JMenuItem, KeySt
  * <li> Drawing an object outside (or partly outside) the canvas is permitted.
  * However, only the part of the object that appears inside the canvas
  * will be visible.
- * <li> Any method that is passed a {@code null} argument will throw an
- * {@link IllegalArgumentException}.
- * <li> Any method that is passed a {@link Double#NaN},
- * {@link Double#POSITIVE_INFINITY}, or {@link Double#NEGATIVE_INFINITY}
- * argument will throw an {@link IllegalArgumentException}.
+ * <li> Any method that is passed a `null` argument will throw an
+ * [[IllegalArgumentException]].
+ * <li> Any method that is passed a [[Double#NaN]],
+ * [[Double#POSITIVE_INFINITY]], or [[Double#NEGATIVE_INFINITY]]
+ * argument will throw an [[IllegalArgumentException]].
  * <li> Due to floating-point issues, an object drawn with an <em>x</em>- or
  * <em>y</em>-coordinate that is way outside the canvas (such as the line segment
  * from (0.5, –10^308) to (0.5, 10^308) may not be visible even in the
@@ -382,20 +381,20 @@ import javax.swing.{ImageIcon, JFrame, JLabel, JMenu, JMenuBar, JMenuItem, KeySt
  * <ul>
  * <li> Use <em>double buffering</em> for static drawing with a large
  * number of objects.
- * That is, call {@link #enableDoubleBuffering()} before
- * the sequence of drawing commands and call {@link #show()} afterwards.
+ * That is, call [[StdDraw#enableDoubleBuffering()]] before
+ * the sequence of drawing commands and call [[StdDraw#show()]] afterwards.
  * Incrementally displaying a complex drawing while it is being
  * created can be intolerably inefficient on many computer systems.
- * <li> When drawing computer animations, call {@code show()}
+ * <li> When drawing computer animations, call `show()`
  * only once per frame, not after drawing each individual object.
- * <li> If you call {@code picture()} multiple times with the same filename,
+ * <li> If you call `picture()` multiple times with the same filename,
  * Java will cache the image, so you do not incur the cost of reading
  * from a file each time.
  * </ul>
  * <p>
  * <b>Known bugs and issues.</b>
  * <ul>
- * <li> The {@code picture()} methods may not draw the portion of the image that is
+ * <li> The `picture()` methods may not draw the portion of the image that is
  * inside the canvas if the center point (<em>x</em>, <em>y</em>) is outside the
  * canvas.
  * This bug appears only on some systems.
@@ -506,7 +505,7 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
   private val DEFAULT_CLEAR_COLOR = WHITE
 
   // current pen color
-  private var penColor = _
+  private var penColor: Color = _
 
   // default canvas size is DEFAULT_SIZE-by-DEFAULT_SIZE
   private val DEFAULT_SIZE = 512
@@ -542,19 +541,19 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
   private val DEFAULT_FONT = new Font("SansSerif", Font.PLAIN, 16)
 
   // current font
-  private var font = _
+  private var font: Font = _
 
   // double buffered graphics
-  private var offscreenImage = _
-  private var onscreenImage = _
-  private var offscreen = _
-  private var onscreen = _
+  private var offscreenImage: BufferedImage = _
+  private var onscreenImage: BufferedImage = _
+  private var offscreen: Graphics2D = _
+  private var onscreen: Graphics2D = _
 
   // singleton for callbacks: avoids generation of extra .class files
   private val std = StdDraw
 
   // the frame for drawing to the screen
-  private var frame = _
+  private var frame: JFrame = _
 
   // mouse state
   private var isMousePress = false
@@ -569,10 +568,29 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
 
   init()
 
+  /**
+   * Sets the canvas (drawing area) to be 512-by-512 pixels.
+   * This also erases the current drawing and resets the coordinate system,
+   * pen radius, pen color, and font back to their default values.
+   * Ordinarily, this method is called once, at the very beginning
+   * of a program.
+   */
   def setCanvasSize(): Unit = {
     setCanvasSize(DEFAULT_SIZE, DEFAULT_SIZE)
   }
 
+  /**
+   * Sets the canvas (drawing area) to be <em>width</em>-by-<em>height</em> pixels.
+   * This also erases the current drawing and resets the coordinate system,
+   * pen radius, pen color, and font back to their default values.
+   * Ordinarly, this method is called once, at the very beginning
+   * of a program.
+   *
+   * @param  canvasWidth  the width as a number of pixels
+   * @param  canvasHeight the height as a number of pixels
+   * @throws IllegalArgumentException unless both `canvasWidth` and
+   *                                  `canvasHeight` are positive
+   */
   def setCanvasSize(canvasWidth: Int, canvasHeight: Int): Unit = {
     if (canvasWidth < 0) throw new IllegalArgumentException("width must be positive")
     if (canvasHeight < 0) throw new IllegalArgumentException("height must be positive")
@@ -661,14 +679,28 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     setYscale(min, max)
   }
 
+  /**
+   * Sets the <em>x</em>-scale to be the default (between 0.0 and 1.0).
+   */
   def setXscale(): Unit = {
     setXscale(DEFAULT_XMIN, DEFAULT_XMAX)
   }
 
+  /**
+   * Sets the <em>y</em>-scale to be the default (between 0.0 and 1.0).
+   */
   def setYscale(): Unit = {
     setYscale(DEFAULT_YMIN, DEFAULT_YMAX)
   }
 
+  /**
+   * Sets the <em>x</em>-scale to the specified range.
+   *
+   * @param  min the minimum value of the <em>x</em>-scale
+   * @param  max the maximum value of the <em>x</em>-scale
+   * @throws IllegalArgumentException if `max==min`
+   * @throws IllegalArgumentException if either `min` or `max` is either NaN or infinite
+   */
   private def setXscale(min: Double, max: Double): Unit = {
     validate(min, "min")
     validate(max, "max")
@@ -680,6 +712,14 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     }
   }
 
+  /**
+   * Sets the <em>y</em>-scale to the specified range.
+   *
+   * @param  min the minimum value of the <em>y</em>-scale
+   * @param  max the maximum value of the <em>y</em>-scale
+   * @throws IllegalArgumentException if `max==min`
+   * @throws IllegalArgumentException if either `min` or `max` is either NaN or infinite
+   */
   private def setYscale(min: Double, max: Double): Unit = {
     validate(min, "min")
     validate(max, "max")
@@ -704,10 +744,19 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
 
   private def userY(y: Double) = ymax - y * (ymax - ymin) / height
 
+  /**
+   * Clears the screen to the default color (white).
+   */
   def clear(): Unit = {
     clear(DEFAULT_CLEAR_COLOR)
   }
 
+  /**
+   * Clears the screen to the specified color.
+   *
+   * @param color the color to make the background
+   * @throws IllegalArgumentException if `color` is `null`
+   */
   def clear(color: Color): Unit = {
     validateNotNull(color, "color")
     offscreen.setColor(color)
@@ -716,12 +765,32 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     draw()
   }
 
+  /**
+   * Returns the current pen radius.
+   *
+   * @return the current value of the pen radius
+   */
   def getPenRadius: Double = penRadius
 
+  /**
+   * Sets the pen size to the default size (0.002).
+   * The pen is circular, so that lines have rounded ends, and when you set the
+   * pen radius and draw a point, you get a circle of the specified radius.
+   * The pen radius is not affected by coordinate scaling.
+   */
   def setPenRadius(): Unit = {
     setPenRadius(DEFAULT_PEN_RADIUS)
   }
 
+  /**
+   * Sets the radius of the pen to the specified size.
+   * The pen is circular, so that lines have rounded ends, and when you set the
+   * pen radius and draw a point, you get a circle of the specified radius.
+   * The pen radius is not affected by coordinate scaling.
+   *
+   * @param  radius the radius of the pen
+   * @throws IllegalArgumentException if `radius` is negative, NaN, or infinite
+   */
   def setPenRadius(radius: Double): Unit = {
     validate(radius, "pen radius")
     validateNonnegative(radius, "pen radius")
@@ -732,8 +801,16 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     offscreen.setStroke(stroke)
   }
 
+  /**
+   * Returns the current pen color.
+   *
+   * @return the current pen color
+   */
   def getPenColor: Color = penColor
 
+  /**
+   * Sets the pen color to the default color (black).
+   */
   def setPenColor(): Unit = {
     setPenColor(DEFAULT_PEN_COLOR)
   }
@@ -762,6 +839,16 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     StdDraw.font = font
   }
 
+  /**
+   * Draws a line segment between (<em>x</em><sub>0</sub>, <em>y</em><sub>0</sub>) and
+   * (<em>x</em><sub>1</sub>, <em>y</em><sub>1</sub>).
+   *
+   * @param  x0 the <em>x</em>-coordinate of one endpoint
+   * @param  y0 the <em>y</em>-coordinate of one endpoint
+   * @param  x1 the <em>x</em>-coordinate of the other endpoint
+   * @param  y1 the <em>y</em>-coordinate of the other endpoint
+   * @throws IllegalArgumentException if any coordinate is either NaN or infinite
+   */
   def line(x0: Double, y0: Double, x1: Double, y1: Double): Unit = {
     validate(x0, "x0")
     validate(y0, "y0")
@@ -771,12 +858,30 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     draw()
   }
 
+  /**
+   * Draws one pixel at (<em>x</em>, <em>y</em>).
+   * This method is private because pixels depend on the display.
+   * To achieve the same effect, set the pen radius to 0 and call `point()`.
+   *
+   * @param  x the <em>x</em>-coordinate of the pixel
+   * @param  y the <em>y</em>-coordinate of the pixel
+   * @throws IllegalArgumentException if `x` or `y` is either NaN or infinite
+   */
   private def pixel(x: Double, y: Double): Unit = {
     validate(x, "x")
     validate(y, "y")
     offscreen.fillRect(Math.round(scaleX(x)).toInt, Math.round(scaleY(y)).toInt, 1, 1)
   }
 
+  /**
+   * Draws a point centered at (<em>x</em>, <em>y</em>).
+   * The point is a filled circle whose radius is equal to the pen radius.
+   * To draw a single-pixel point, first set the pen radius to 0.
+   *
+   * @param x the <em>x</em>-coordinate of the point
+   * @param y the <em>y</em>-coordinate of the point
+   * @throws IllegalArgumentException if either `x` or `y` is either NaN or infinite
+   */
   def point(x: Int, y: Int): Unit = {
     validate(x, "x")
     validate(y, "y")
@@ -796,6 +901,15 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     draw()
   }
 
+  /**
+   * Draws a circle of the specified radius, centered at (<em>x</em>, <em>y</em>).
+   *
+   * @param  x      the <em>x</em>-coordinate of the center of the circle
+   * @param  y      the <em>y</em>-coordinate of the center of the circle
+   * @param  radius the radius of the circle
+   * @throws IllegalArgumentException if `radius` is negative
+   * @throws IllegalArgumentException if any argument is either NaN or infinite
+   */
   def circle(x: Double, y: Double, radius: Double): Unit = {
     validate(x, "x")
     validate(y, "y")
@@ -816,6 +930,15 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     draw()
   }
 
+  /**
+   * Draws a filled circle of the specified radius, centered at (<em>x</em>, <em>y</em>).
+   *
+   * @param  x      the <em>x</em>-coordinate of the center of the circle
+   * @param  y      the <em>y</em>-coordinate of the center of the circle
+   * @param  radius the radius of the circle
+   * @throws IllegalArgumentException if `radius` is negative
+   * @throws IllegalArgumentException if any argument is either NaN or infinite
+   */
   def fillCircle(x: Double, y: Double, radius: Double): Unit = {
     validate(x, "x")
     validate(y, "y")
@@ -836,6 +959,18 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     draw()
   }
 
+  /**
+   * Draws an ellipse with the specified semimajor and semiminor axes,
+   * centered at (<em>x</em>, <em>y</em>).
+   *
+   * @param  x             the <em>x</em>-coordinate of the center of the ellipse
+   * @param  y             the <em>y</em>-coordinate of the center of the ellipse
+   * @param  semiMajorAxis is the semimajor axis of the ellipse
+   * @param  semiMinorAxis is the semiminor axis of the ellipse
+   * @throws IllegalArgumentException if either `semiMajorAxis`
+   *                                  or `semiMinorAxis` is negative
+   * @throws IllegalArgumentException if any argument is either NaN or infinite
+   */
   def ellipse(x: Double, y: Double, semiMajorAxis: Double, semiMinorAxis: Double): Unit = {
     validate(x, "x")
     validate(y, "y")
@@ -853,6 +988,18 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     draw()
   }
 
+  /**
+   * Draws a filled ellipse with the specified semimajor and semiminor axes,
+   * centered at (<em>x</em>, <em>y</em>).
+   *
+   * @param  x             the <em>x</em>-coordinate of the center of the ellipse
+   * @param  y             the <em>y</em>-coordinate of the center of the ellipse
+   * @param  semiMajorAxis is the semimajor axis of the ellipse
+   * @param  semiMinorAxis is the semiminor axis of the ellipse
+   * @throws IllegalArgumentException if either `semiMajorAxis`
+   *                                  or `semiMinorAxis` is negative
+   * @throws IllegalArgumentException if any argument is either NaN or infinite
+   */
   def filledEllipse(x: Double, y: Double, semiMajorAxis: Double, semiMinorAxis: Double): Unit = {
     validate(x, "x")
     validate(y, "y")
@@ -869,6 +1016,19 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     draw()
   }
 
+  /**
+   * Draws a circular arc of the specified radius,
+   * centered at (<em>x</em>, <em>y</em>), from angle1 to angle2 (in degrees).
+   *
+   * @param  x      the <em>x</em>-coordinate of the center of the circle
+   * @param  y      the <em>y</em>-coordinate of the center of the circle
+   * @param  radius the radius of the circle
+   * @param  angle1 the starting angle. 0 would mean an arc beginning at 3 o'clock.
+   * @param  angle2 the angle at the end of the arc. For example, if
+   *                you want a 90 degree arc, then angle2 should be angle1 + 90.
+   * @throws IllegalArgumentException if `radius` is negative
+   * @throws IllegalArgumentException if any argument is either NaN or infinite
+   */
   def arc(x: Double, y: Double, radius: Double, angle1: Double, angle2: Double): Unit = {
     validate(x, "x")
     validate(y, "y")
@@ -887,6 +1047,15 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     draw()
   }
 
+  /**
+   * Draws a square of the specified size, centered at (<em>x</em>, <em>y</em>).
+   *
+   * @param  x          the <em>x</em>-coordinate of the center of the square
+   * @param  y          the <em>y</em>-coordinate of the center of the square
+   * @param  halfLength one half the length of any side of the square
+   * @throws IllegalArgumentException if `halfLength` is negative
+   * @throws IllegalArgumentException if any argument is either NaN or infinite
+   */
   def square(x: Double, y: Double, halfLength: Double): Unit = {
     validate(x, "x")
     validate(y, "y")
@@ -901,6 +1070,15 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     draw()
   }
 
+  /**
+   * Draws a filled square of the specified size, centered at (<em>x</em>, <em>y</em>).
+   *
+   * @param  x          the <em>x</em>-coordinate of the center of the square
+   * @param  y          the <em>y</em>-coordinate of the center of the square
+   * @param  halfLength one half the length of any side of the square
+   * @throws IllegalArgumentException if `halfLength` is negative
+   * @throws IllegalArgumentException if any argument is either NaN or infinite
+   */
   def filledSquare(x: Double, y: Double, halfLength: Double): Unit = {
     validate(x, "x")
     validate(y, "y")
@@ -915,6 +1093,16 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     draw()
   }
 
+  /**
+   * Draws a rectangle of the specified size, centered at (<em>x</em>, <em>y</em>).
+   *
+   * @param  x          the <em>x</em>-coordinate of the center of the rectangle
+   * @param  y          the <em>y</em>-coordinate of the center of the rectangle
+   * @param  halfWidth  one half the width of the rectangle
+   * @param  halfHeight one half the height of the rectangle
+   * @throws IllegalArgumentException if either `halfWidth` or `halfHeight` is negative
+   * @throws IllegalArgumentException if any argument is either NaN or infinite
+   */
   def rectangle(x: Double, y: Double, halfWidth: Double, halfHeight: Double): Unit = {
     validate(x, "x")
     validate(y, "y")
@@ -931,8 +1119,16 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     draw()
   }
 
-  import java.awt.geom.Rectangle2D
-
+  /**
+   * Draws a filled rectangle of the specified size, centered at (<em>x</em>, <em>y</em>).
+   *
+   * @param  x          the <em>x</em>-coordinate of the center of the rectangle
+   * @param  y          the <em>y</em>-coordinate of the center of the rectangle
+   * @param  halfWidth  one half the width of the rectangle
+   * @param  halfHeight one half the height of the rectangle
+   * @throws IllegalArgumentException if either `halfWidth` or `halfHeight` is negative
+   * @throws IllegalArgumentException if any argument is either NaN or infinite
+   */
   def filledRectangle(x: Double, y: Double, halfWidth: Double, halfHeight: Double): Unit = {
     validate(x, "x")
     validate(y, "y")
@@ -949,8 +1145,19 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     draw()
   }
 
-  import java.awt.geom.GeneralPath
-
+  /**
+   * Draws a polygon with the vertices
+   * (<em>x</em><sub>0</sub>, <em>y</em><sub>0</sub>),
+   * (<em>x</em><sub>1</sub>, <em>y</em><sub>1</sub>), ...,
+   * (<em>x</em><sub><em>n</em>–1</sub>, <em>y</em><sub><em>n</em>–1</sub>).
+   *
+   * @param  x an array of all the <em>x</em>-coordinates of the polygon
+   * @param  y an array of all the <em>y</em>-coordinates of the polygon
+   * @throws IllegalArgumentException unless `x[]` and `y[]`
+   *                                  are of the same length
+   * @throws IllegalArgumentException if any coordinate is either NaN or infinite
+   * @throws IllegalArgumentException if either `x[]` or `y[]` is `null`
+   */
   def polygon(x: Array[Double], y: Array[Double]): Unit = {
     validateNotNull(x, "x-coordinate array")
     validateNotNull(y, "y-coordinate array")
@@ -969,6 +1176,19 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     draw()
   }
 
+  /**
+   * Draws a filled polygon with the vertices
+   * (<em>x</em><sub>0</sub>, <em>y</em><sub>0</sub>),
+   * (<em>x</em><sub>1</sub>, <em>y</em><sub>1</sub>), ...,
+   * (<em>x</em><sub><em>n</em>–1</sub>, <em>y</em><sub><em>n</em>–1</sub>).
+   *
+   * @param  x an array of all the <em>x</em>-coordinates of the polygon
+   * @param  y an array of all the <em>y</em>-coordinates of the polygon
+   * @throws IllegalArgumentException unless `x[]` and `y[]`
+   *                                  are of the same length
+   * @throws IllegalArgumentException if any coordinate is either NaN or infinite
+   * @throws IllegalArgumentException if either `x[]` or `y[]` is `null`
+   */
   def filledPolygon(x: Array[Double], y: Array[Double]): Unit = {
     validateNotNull(x, "x-coordinate array")
     validateNotNull(y, "y-coordinate array")
@@ -1015,6 +1235,20 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     icon.getImage
   }
 
+  /**
+   * Draws the specified image centered at (<em>x</em>, <em>y</em>).
+   * The supported image formats are JPEG, PNG, and GIF.
+   * As an optimization, the picture is cached, so there is no performance
+   * penalty for redrawing the same image multiple times (e.g., in an animation).
+   * However, if you change the picture file after drawing it, subsequent
+   * calls will draw the original picture.
+   *
+   * @param  x        the center <em>x</em>-coordinate of the image
+   * @param  y        the center <em>y</em>-coordinate of the image
+   * @param  filename the name of the image/picture, e.g., "ball.gif"
+   * @throws IllegalArgumentException if the image filename is invalid
+   * @throws IllegalArgumentException if either `x` or `y` is either NaN or infinite
+   */
   def picture(x: Double, y: Double, filename: String): Unit = {
     validate(x, "x")
     validate(y, "y")
@@ -1032,6 +1266,19 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     draw()
   }
 
+  /**
+   * Draws the specified image centered at (<em>x</em>, <em>y</em>),
+   * rotated given number of degrees.
+   * The supported image formats are JPEG, PNG, and GIF.
+   *
+   * @param  x        the center <em>x</em>-coordinate of the image
+   * @param  y        the center <em>y</em>-coordinate of the image
+   * @param  filename the name of the image/picture, e.g., "ball.gif"
+   * @param  degrees  is the number of degrees to rotate counterclockwise
+   * @throws IllegalArgumentException if the image filename is invalid
+   * @throws IllegalArgumentException if `x`, `y`, `degrees` is NaN or infinite
+   * @throws IllegalArgumentException if `filename` is `null`
+   */
   def picture(x: Double, y: Double, filename: String, degrees: Double): Unit = {
     validate(x, "x")
     validate(y, "y")
@@ -1052,6 +1299,22 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     draw()
   }
 
+  /**
+   * Draws the specified image centered at (<em>x</em>, <em>y</em>),
+   * rescaled to the specified bounding box.
+   * The supported image formats are JPEG, PNG, and GIF.
+   *
+   * @param  x            the center <em>x</em>-coordinate of the image
+   * @param  y            the center <em>y</em>-coordinate of the image
+   * @param  filename     the name of the image/picture, e.g., "ball.gif"
+   * @param  scaledWidth  the width of the scaled image (in screen coordinates)
+   * @param  scaledHeight the height of the scaled image (in screen coordinates)
+   * @throws IllegalArgumentException if either `scaledWidth`
+   *                                  or `scaledHeight` is negative
+   * @throws IllegalArgumentException if the image filename is invalid
+   * @throws IllegalArgumentException if `x` or `y` is either NaN or infinite
+   * @throws IllegalArgumentException if `filename` is `null`
+   */
   def picture(x: Double, y: Double, filename: String, scaledWidth: Double, scaledHeight: Double): Unit = {
     validate(x, "x")
     validate(y, "y")
@@ -1071,6 +1334,21 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     draw()
   }
 
+  /**
+   * Draws the specified image centered at (<em>x</em>, <em>y</em>), rotated
+   * given number of degrees, and rescaled to the specified bounding box.
+   * The supported image formats are JPEG, PNG, and GIF.
+   *
+   * @param  x            the center <em>x</em>-coordinate of the image
+   * @param  y            the center <em>y</em>-coordinate of the image
+   * @param  filename     the name of the image/picture, e.g., "ball.gif"
+   * @param  scaledWidth  the width of the scaled image (in screen coordinates)
+   * @param  scaledHeight the height of the scaled image (in screen coordinates)
+   * @param  degrees      is the number of degrees to rotate counterclockwise
+   * @throws IllegalArgumentException if either `scaledWidth`
+   *                                  or `scaledHeight` is negative
+   * @throws IllegalArgumentException if the image filename is invalid
+   */
   def picture(x: Double, y: Double, filename: String, scaledWidth: Double, scaledHeight: Double, degrees: Double): Unit = {
     validate(x, "x")
     validate(y, "y")
@@ -1093,6 +1371,15 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     draw()
   }
 
+  /**
+   * Writes the given text string in the current font, centered at (<em>x</em>, <em>y</em>).
+   *
+   * @param  x    the center <em>x</em>-coordinate of the text
+   * @param  y    the center <em>y</em>-coordinate of the text
+   * @param  text the text to write
+   * @throws IllegalArgumentException if `text` is `null`
+   * @throws IllegalArgumentException if `x` or `y` is either NaN or infinite
+   */
   def text(x: Double, y: Double, text: String): Unit = {
     validate(x, "x")
     validate(y, "y")
@@ -1107,6 +1394,17 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     draw()
   }
 
+  /**
+   * Writes the given text string in the current font, centered at (<em>x</em>, <em>y</em>) and
+   * rotated by the specified number of degrees.
+   *
+   * @param  x       the center <em>x</em>-coordinate of the text
+   * @param  y       the center <em>y</em>-coordinate of the text
+   * @param  t       the text to write
+   * @param  degrees is the number of degrees to rotate counterclockwise
+   * @throws IllegalArgumentException if `t` is `null`
+   * @throws IllegalArgumentException if `x`, `y`, or `degrees` is either NaN or infinite
+   */
   def text(x: Double, y: Double, t: String, degrees: Double): Unit = {
     validate(x, "x")
     validate(y, "y")
@@ -1119,6 +1417,15 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     offscreen.rotate(Math.toRadians(+degrees), xs, ys)
   }
 
+  /**
+   * Writes the given text string in the current font, left-aligned at (<em>x</em>, <em>y</em>).
+   *
+   * @param  x    the <em>x</em>-coordinate of the text
+   * @param  y    the <em>y</em>-coordinate of the text
+   * @param  text the text
+   * @throws IllegalArgumentException if `text` is `null`
+   * @throws IllegalArgumentException if `x` or `y` is either NaN or infinite
+   */
   def textLeft(x: Double, y: Double, text: String): Unit = {
     validate(x, "x")
     validate(y, "y")
@@ -1132,6 +1439,15 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     draw()
   }
 
+  /**
+   * Writes the given text string in the current font, right-aligned at (<em>x</em>, <em>y</em>).
+   *
+   * @param  x    the <em>x</em>-coordinate of the text
+   * @param  y    the <em>y</em>-coordinate of the text
+   * @param  text the text to write
+   * @throws IllegalArgumentException if `text` is `null`
+   * @throws IllegalArgumentException if `x` or `y` is either NaN or infinite
+   */
   def textRight(x: Double, y: Double, text: String): Unit = {
     validate(x, "x")
     validate(y, "y")
@@ -1160,11 +1476,16 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     }
   }
 
+  /**
+   * Copies offscreen buffer to onscreen buffer. There is no reason to call
+   * this method unless double buffering is enabled.
+   */
   def show(): Unit = {
     onscreen.drawImage(offscreenImage, 0, 0, null)
     frame.repaint()
   }
 
+  // draw onscreen if defer is false
   private def draw(): Unit = {
     if (!defer) show()
   }
@@ -1240,27 +1561,21 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
    *
    * @return `true` if the mouse is being pressed; `false` otherwise
    */
-  def isMousePressed: Boolean = mouseLock.synchronized {
-    isMousePress
-  }
+  def isMousePressed: Boolean = mouseLock synchronized isMousePress
 
   /**
    * Returns the <em>x</em>-coordinate of the mouse.
    *
    * @return the <em>x</em>-coordinate of the mouse
    */
-  def mouseX(): Double = mouseLock synchronized {
-    mX
-  }
+  def mouseX(): Double = mouseLock synchronized mX
 
   /**
    * Returns the <em>y</em>-coordinate of the mouse.
    *
    * @return <em>y</em>-coordinate of the mouse
    */
-  def mouseY(): Double = mouseLock synchronized {
-    mY
-  }
+  def mouseY(): Double = mouseLock synchronized mY
 
   override def mouseClicked(e: MouseEvent): Unit = {
     // this body is intentionally left empty
@@ -1308,8 +1623,7 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
    * @return { @code true} if the user has typed a key (that has not yet been processed
    *         by [[StdDraw#nextKeyTyped]]; `false` otherwise
    */
-  def hasNextKeyTyped: Boolean = keyLock synchronized
-    !keysTyped.isEmpty
+  def hasNextKeyTyped: Boolean = keyLock synchronized !keysTyped.isEmpty
 
   def nextKeyTyped: Char = keyLock synchronized {
     if (keysTyped.isEmpty) throw new NoSuchElementException("your program has already processed all keystrokes")
@@ -1317,9 +1631,7 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     // return keysTyped.removeLast();
   }
 
-  def isKeyPressed(keycode: Int): Boolean = keyLock.synchronized {
-    keysDown.contains(keycode)
-  }
+  def isKeyPressed(keycode: Int): Boolean = keyLock synchronized keysDown.contains(keycode)
 
   override def keyTyped(e: KeyEvent): Unit = {
     keyLock.synchronized {

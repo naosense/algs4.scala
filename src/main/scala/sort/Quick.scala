@@ -19,30 +19,14 @@ object Quick {
   }
 
   private def partition[A: Ordering](a: Array[A], lo: Int, hi: Int): Int = {
-    import scala.util.control.Breaks._
-
     var i = lo
     var j = hi + 1
     val v = a(lo)
-    breakable {
-      while (true) {
-        i += 1
-        breakable {
-          while (less(a(i), v)) {
-            if (i == hi) break()
-            i += 1
-          }
-        }
-        j -= 1
-        breakable {
-          while (less(v, a(j))) {
-            if (j == lo) break()
-            j -= 1
-          }
-        }
-        if (i >= j) break()
-        exch(a, i, j)
-      }
+    // 将原来程序中的break去掉，因为scala的break性能很差
+    while (i < j) {
+      while (less(a({ i += 1; i }), v) && i < hi) {}
+      while (less(v, a({ j -= 1; j })) && j > lo) {}
+      if (i < j) exch(a, i, j)
     }
     exch(a, lo, j)
     j

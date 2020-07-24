@@ -11,7 +11,7 @@ object StdRandom {
     rnd = new Random(seed)
   }
 
-  def getSeed(): Long = seed
+  def getSeed: Long = seed
 
   def uniform(): Double = rnd.nextDouble()
 
