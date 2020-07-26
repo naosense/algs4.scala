@@ -11,6 +11,405 @@ import java.util
 import javax.imageio.ImageIO
 import javax.swing.{ImageIcon, JFrame, JLabel, JMenu, JMenuBar, JMenuItem, KeyStroke}
 
+/**
+ * The `StdDraw` class provides a basic capability for
+ * creating drawings with your programs. It uses a simple graphics model that
+ * allows you to create drawings consisting of points, lines, squares,
+ * circles, and other geometric shapes in a window on your computer and
+ * to save the drawings to a file. Standard drawing also includes
+ * facilities for text, color, pictures, and animation, along with
+ * user interaction via the keyboard and mouse.
+ * <p>
+ * <b>Getting started.</b>
+ * To use this class, you must have `StdDraw.class` in your
+ * Java classpath. If you used our autoinstaller, you should be all set.
+ * Otherwise, either download
+ * <a href = "https://introcs.cs.princeton.edu/java/code/stdlib.jar">stdlib.jar</a>
+ * and add to your Java classpath or download
+ * <a href = "https://introcs.cs.princeton.edu/java/stdlib/StdDraw.java">StdDraw.java</a>
+ * and put a copy in your working directory.
+ * <p>
+ * Now, type the following short program into your editor:
+ * {{{
+ * public class TestStdDraw {
+ *  public static void main(String[] args) {
+ *             StdDraw.setPenRadius(0.05);
+ *            StdDraw.setPenColor(StdDraw.BLUE);
+ *             StdDraw.point(0.5, 0.5);
+ *             StdDraw.setPenColor(StdDraw.MAGENTA);
+ *             StdDraw.line(0.2, 0.2, 0.8, 0.2);
+ *   }
+ *   }
+ * }}}
+ *
+ * If you compile and execute the program, you should see a window
+ * appear with a thick magenta line and a blue point.
+ * This program illustrates the two main types of methods in standard
+ * drawing—methods that draw geometric shapes and methods that
+ * control drawing parameters.
+ * The methods `StdDraw.line()` and `StdDraw.point()`
+ * draw lines and points; the methods `StdDraw.setPenRadius()`
+ * and `StdDraw.setPenColor()` control the line thickness and color.
+ * <p>
+ * <b>Points and lines.</b>
+ * You can draw points and line segments with the following methods:
+ * <ul>
+ * <li> [[StdDraw#point(double x, double y)]]
+ * <li> [[StdDraw#line(double x1, double y1, double x2, double y2)]]
+ * </ul>
+ * <p>
+ * The <em>x</em>- and <em>y</em>-coordinates must be in the drawing area
+ * (between 0 and 1 and by default) or the points and lines will not be visible.
+ * <p>
+ * <b>Squares, circles, rectangles, and ellipses.</b>
+ * You can draw squares, circles, rectangles, and ellipses using
+ * the following methods:
+ * <ul>
+ * <li> [[StdDraw#circle(double x, double y, double radius)]]
+ * <li> [[StdDraw#ellipse(double x, double y, double semiMajorAxis, double semiMinorAxis)]]
+ * <li> [[StdDraw#square(double x, double y, double halfLength)]]
+ * <li> [[StdDraw#rectangle(double x, double y, double halfWidth, double halfHeight)]]
+ * </ul>
+ * <p>
+ * All of these methods take as arguments the location and size of the shape.
+ * The location is always specified by the <em>x</em>- and <em>y</em>-coordinates
+ * of its <em>center</em>.
+ * The size of a circle is specified by its radius and the size of an ellipse is
+ * specified by the lengths of its semi-major and semi-minor axes.
+ * The size of a square or rectangle is specified by its half-width or half-height.
+ * The convention for drawing squares and rectangles is parallel to those for
+ * drawing circles and ellipses, but may be unexpected to the uninitiated.
+ * <p>
+ * The methods above trace outlines of the given shapes. The following methods
+ * draw filled versions:
+ * <ul>
+ * <li> [[StdDraw#filledCircle(double x, double y, double radius)]]
+ * <li> [[StdDraw#filledEllipse(double x, double y, double semiMajorAxis, double semiMinorAxis)]]
+ * <li> [[StdDraw#filledSquare(double x, double y, double radius)]]
+ * <li> [[StdDraw#filledRectangle(double x, double y, double halfWidth, double halfHeight)]]
+ * </ul>
+ * <p>
+ * <b>Circular arcs.</b>
+ * You can draw circular arcs with the following method:
+ * <ul>
+ * <li> [[StdDraw#arc(double x, double y, double radius, double angle1, double angle2)]]
+ * </ul>
+ * <p>
+ * The arc is from the circle centered at (<em>x</em>, <em>y</em>) of the specified radius.
+ * The arc extends from angle1 to angle2. By convention, the angles are
+ * <em>polar</em> (counterclockwise angle from the <em>x</em>-axis)
+ * and represented in degrees. For example, `StdDraw.arc(0.0, 0.0, 1.0, 0, 90)`
+ * draws the arc of the unit circle from 3 o'clock (0 degrees) to 12 o'clock (90 degrees).
+ * <p>
+ * <b>Polygons.</b>
+ * You can draw polygons with the following methods:
+ * <ul>
+ * <li> [[StdDraw#polygon(double[] x, double[] y)]]
+ * <li> [[StdDraw#filledPolygon(double[] x, double[] y)]]
+ * </ul>
+ * <p>
+ * The points in the polygon are ({@code x[i]}, {@code y[i]}).
+ * For example, the following code fragment draws a filled diamond
+ * with vertices (0.1, 0.2), (0.2, 0.3), (0.3, 0.2), and (0.2, 0.1):
+ * <pre>
+ * double[] x = { 0.1, 0.2, 0.3, 0.2 };
+ * double[] y = { 0.2, 0.3, 0.2, 0.1 };
+ *   StdDraw.filledPolygon(x, y);
+ * </pre>
+ * <p>
+ * <b>Pen size.</b>
+ * The pen is circular, so that when you set the pen radius to <em>r</em>
+ * and draw a point, you get a circle of radius <em>r</em>. Also, lines are
+ * of thickness 2<em>r</em> and have rounded ends. The default pen radius
+ * is 0.005 and is not affected by coordinate scaling. This default pen
+ * radius is about 1/200 the width of the default canvas, so that if
+ * you draw 100 points equally spaced along a horizontal or vertical line,
+ * you will be able to see individual circles, but if you draw 200 such
+ * points, the result will look like a line.
+ * <ul>
+ * <li> {@link #setPenRadius(double radius)}
+ * </ul>
+ * <p>
+ * For example, {@code StdDraw.setPenRadius(0.025)} makes
+ * the thickness of the lines and the size of the points to be five times
+ * the 0.005 default.
+ * To draw points with the minimum possible radius (one pixel on typical
+ * displays), set the pen radius to 0.0.
+ * <p>
+ * <b>Pen color.</b>
+ * All geometric shapes (such as points, lines, and circles) are drawn using
+ * the current pen color. By default, it is black.
+ * You can change the pen color with the following methods:
+ * <ul>
+ * <li> {@link #setPenColor(int red, int green, int blue)}
+ * <li> {@link #setPenColor(Color color)}
+ * </ul>
+ * <p>
+ * The first method allows you to specify colors using the RGB color system.
+ * This <a href = "http://johndyer.name/lab/colorpicker/">color picker</a>
+ * is a convenient way to find a desired color.
+ * The second method allows you to specify colors using the
+ * {@link Color} data type that is discussed in Chapter 3. Until then,
+ * you can use this method with one of these predefined colors in standard drawing:
+ * {@link #BLACK}, {@link #BLUE}, {@link #CYAN}, {@link #DARK_GRAY}, {@link #GRAY},
+ * {@link #GREEN}, {@link #LIGHT_GRAY}, {@link #MAGENTA}, {@link #ORANGE},
+ * {@link #PINK}, {@link #RED}, {@link #WHITE}, {@link #YELLOW},
+ * {@link #BOOK_BLUE}, {@link #BOOK_LIGHT_BLUE}, {@link #BOOK_RED}, and
+ * {@link #PRINCETON_ORANGE}.
+ * For example, {@code StdDraw.setPenColor(StdDraw.MAGENTA)} sets the
+ * pen color to magenta.
+ * <p>
+ * <b>Canvas size.</b>
+ * By default, all drawing takes places in a 512-by-512 canvas.
+ * The canvas does not include the window title or window border.
+ * You can change the size of the canvas with the following method:
+ * <ul>
+ * <li> {@link #setCanvasSize(int width, int height)}
+ * </ul>
+ * <p>
+ * This sets the canvas size to be <em>width</em>-by-<em>height</em> pixels.
+ * It also erases the current drawing and resets the coordinate system,
+ * pen radius, pen color, and font back to their default values.
+ * Ordinarly, this method is called once, at the very beginning of a program.
+ * For example, {@code StdDraw.setCanvasSize(800, 800)}
+ * sets the canvas size to be 800-by-800 pixels.
+ * <p>
+ * <b>Canvas scale and coordinate system.</b>
+ * By default, all drawing takes places in the unit square, with (0, 0) at
+ * lower left and (1, 1) at upper right. You can change the default
+ * coordinate system with the following methods:
+ * <ul>
+ * <li> {@link #setXscale(double xmin, double xmax)}
+ * <li> {@link #setYscale(double ymin, double ymax)}
+ * <li> {@link #setScale(double min, double max)}
+ * </ul>
+ * <p>
+ * The arguments are the coordinates of the minimum and maximum
+ * <em>x</em>- or <em>y</em>-coordinates that will appear in the canvas.
+ * For example, if you  wish to use the default coordinate system but
+ * leave a small margin, you can call {@code StdDraw.setScale(-.05, 1.05)}.
+ * <p>
+ * These methods change the coordinate system for subsequent drawing
+ * commands; they do not affect previous drawings.
+ * These methods do not change the canvas size; so, if the <em>x</em>-
+ * and <em>y</em>-scales are different, squares will become rectangles
+ * and circles will become ellipses.
+ * <p>
+ * <b>Text.</b>
+ * You can use the following methods to annotate your drawings with text:
+ * <ul>
+ * <li> {@link #text(double x, double y, String text)}
+ * <li> {@link #text(double x, double y, String text, double degrees)}
+ * <li> {@link #textLeft(double x, double y, String text)}
+ * <li> {@link #textRight(double x, double y, String text)}
+ * </ul>
+ * <p>
+ * The first two methods write the specified text in the current font,
+ * centered at (<em>x</em>, <em>y</em>).
+ * The second method allows you to rotate the text.
+ * The last two methods either left- or right-align the text at (<em>x</em>, <em>y</em>).
+ * <p>
+ * The default font is a Sans Serif font with point size 16.
+ * You can use the following method to change the font:
+ * <ul>
+ * <li> {@link #setFont(Font font)}
+ * </ul>
+ * <p>
+ * You use the {@link Font} data type to specify the font. This allows you to
+ * choose the face, size, and style of the font. For example, the following
+ * code fragment sets the font to Arial Bold, 60 point.
+ * <pre>
+ * Font font = new Font("Arial", Font.BOLD, 60);
+ *   StdDraw.setFont(font);
+ *   StdDraw.text(0.5, 0.5, "Hello, World");
+ * </pre>
+ * <p>
+ * <b>Images.</b>
+ * You can use the following methods to add images to your drawings:
+ * <ul>
+ * <li> {@link #picture(double x, double y, String filename)}
+ * <li> {@link #picture(double x, double y, String filename, double degrees)}
+ * <li> {@link #picture(double x, double y, String filename, double scaledWidth, double scaledHeight)}
+ * <li> {@link #picture(double x, double y, String filename, double scaledWidth, double scaledHeight, double degrees)}
+ * </ul>
+ * <p>
+ * These methods draw the specified image, centered at (<em>x</em>, <em>y</em>).
+ * The supported image formats are JPEG, PNG, and GIF.
+ * The image will display at its native size, independent of the coordinate system.
+ * Optionally, you can rotate the image a specified number of degrees counterclockwise
+ * or rescale it to fit snugly inside a width-by-height bounding box.
+ * <p>
+ * <b>Saving to a file.</b>
+ * You save your image to a file using the <em>File → Save</em> menu option.
+ * You can also save a file programatically using the following method:
+ * <ul>
+ * <li> {@link #save(String filename)}
+ * </ul>
+ * <p>
+ * The supported image formats are JPEG and PNG. The filename must have either the
+ * extension .jpg or .png.
+ * We recommend using PNG for drawing that consist solely of geometric shapes and JPEG
+ * for drawings that contains pictures.
+ * <p>
+ * <b>Clearing the canvas.</b>
+ * To clear the entire drawing canvas, you can use the following methods:
+ * <ul>
+ * <li> {@link #clear()}
+ * <li> {@link #clear(Color color)}
+ * </ul>
+ * <p>
+ * The first method clears the canvas to white; the second method
+ * allows you to specify a color of your choice. For example,
+ * {@code StdDraw.clear(StdDraw.LIGHT_GRAY)} clears the canvas to a shade
+ * of gray.
+ * <p>
+ * <b>Computer animations and double buffering.</b>
+ * Double buffering is one of the most powerful features of standard drawing,
+ * enabling computer animations.
+ * The following methods control the way in which objects are drawn:
+ * <ul>
+ * <li> {@link #enableDoubleBuffering()}
+ * <li> {@link #disableDoubleBuffering()}
+ * <li> {@link #show()}
+ * <li> {@link #pause(int t)}
+ * </ul>
+ * <p>
+ * By default, double buffering is disabled, which means that as soon as you
+ * call a drawing
+ * method—such as {@code point()} or {@code line()}—the
+ * results appear on the screen.
+ * <p>
+ * When double buffering is enabled by calling {@link #enableDoubleBuffering()},
+ * all drawing takes place on the <em>offscreen canvas</em>. The offscreen canvas
+ * is not displayed. Only when you call
+ * {@link #show()} does your drawing get copied from the offscreen canvas to
+ * the onscreen canvas, where it is displayed in the standard drawing window. You
+ * can think of double buffering as collecting all of the lines, points, shapes,
+ * and text that you tell it to draw, and then drawing them all
+ * <em>simultaneously</em>, upon request.
+ * <p>
+ * The most important use of double buffering is to produce computer
+ * animations, creating the illusion of motion by rapidly
+ * displaying static drawings. To produce an animation, repeat
+ * the following four steps:
+ * <ul>
+ * <li> Clear the offscreen canvas.
+ * <li> Draw objects on the offscreen canvas.
+ * <li> Copy the offscreen canvas to the onscreen canvas.
+ * <li> Wait for a short while.
+ * </ul>
+ * <p>
+ * The {@link #clear()}, {@link #show()}, and {@link #pause(int t)} methods
+ * support the first, third, and fourth of these steps, respectively.
+ * <p>
+ * For example, this code fragment animates two balls moving in a circle.
+ * <pre>
+ *   StdDraw.setScale(-2, +2);
+ *   StdDraw.enableDoubleBuffering();
+ *
+ * for (double t = 0.0; true; t += 0.02) {
+ * double x = Math.sin(t);
+ * double y = Math.cos(t);
+ *       StdDraw.clear();
+ *       StdDraw.filledCircle(x, y, 0.05);
+ *       StdDraw.filledCircle(-x, -y, 0.05);
+ *       StdDraw.show();
+ *       StdDraw.pause(20);
+ * }
+ * </pre>
+ * <p>
+ * <b>Keyboard and mouse inputs.</b>
+ * Standard drawing has very basic support for keyboard and mouse input.
+ * It is much less powerful than most user interface libraries provide, but also much simpler.
+ * You can use the following methods to intercept mouse events:
+ * <ul>
+ * <li> {@link #isMousePressed()}
+ * <li> {@link #mouseX()}
+ * <li> {@link #mouseY()}
+ * </ul>
+ * <p>
+ * The first method tells you whether a mouse button is currently being pressed.
+ * The last two methods tells you the <em>x</em>- and <em>y</em>-coordinates of the mouse's
+ * current position, using the same coordinate system as the canvas (the unit square, by default).
+ * You should use these methods in an animation loop that waits a short while before trying
+ * to poll the mouse for its current state.
+ * You can use the following methods to intercept keyboard events:
+ * <ul>
+ * <li> {@link #hasNextKeyTyped()}
+ * <li> {@link #nextKeyTyped()}
+ * <li> {@link #isKeyPressed(int keycode)}
+ * </ul>
+ * <p>
+ * If the user types lots of keys, they will be saved in a list until you process them.
+ * The first method tells you whether the user has typed a key (that your program has
+ * not yet processed).
+ * The second method returns the next key that the user typed (that your program has
+ * not yet processed) and removes it from the list of saved keystrokes.
+ * The third method tells you whether a key is currently being pressed.
+ * <p>
+ * <b>Accessing control parameters.</b>
+ * You can use the following methods to access the current pen color, pen radius,
+ * and font:
+ * <ul>
+ * <li> {@link #getPenColor()}
+ * <li> {@link #getPenRadius()}
+ * <li> {@link #getFont()}
+ * </ul>
+ * <p>
+ * These methods are useful when you want to temporarily change a
+ * control parameter and reset it back to its original value.
+ * <p>
+ * <b>Corner cases.</b>
+ * Here are some corner cases.
+ * <ul>
+ * <li> Drawing an object outside (or partly outside) the canvas is permitted.
+ * However, only the part of the object that appears inside the canvas
+ * will be visible.
+ * <li> Any method that is passed a {@code null} argument will throw an
+ * {@link IllegalArgumentException}.
+ * <li> Any method that is passed a {@link Double#NaN},
+ * {@link Double#POSITIVE_INFINITY}, or {@link Double#NEGATIVE_INFINITY}
+ * argument will throw an {@link IllegalArgumentException}.
+ * <li> Due to floating-point issues, an object drawn with an <em>x</em>- or
+ * <em>y</em>-coordinate that is way outside the canvas (such as the line segment
+ * from (0.5, –10^308) to (0.5, 10^308) may not be visible even in the
+ * part of the canvas where it should be.
+ * </ul>
+ * <p>
+ * <b>Performance tricks.</b>
+ * Standard drawing is capable of drawing large amounts of data.
+ * Here are a few tricks and tips:
+ * <ul>
+ * <li> Use <em>double buffering</em> for static drawing with a large
+ * number of objects.
+ * That is, call {@link #enableDoubleBuffering()} before
+ * the sequence of drawing commands and call {@link #show()} afterwards.
+ * Incrementally displaying a complex drawing while it is being
+ * created can be intolerably inefficient on many computer systems.
+ * <li> When drawing computer animations, call {@code show()}
+ * only once per frame, not after drawing each individual object.
+ * <li> If you call {@code picture()} multiple times with the same filename,
+ * Java will cache the image, so you do not incur the cost of reading
+ * from a file each time.
+ * </ul>
+ * <p>
+ * <b>Known bugs and issues.</b>
+ * <ul>
+ * <li> The {@code picture()} methods may not draw the portion of the image that is
+ * inside the canvas if the center point (<em>x</em>, <em>y</em>) is outside the
+ * canvas.
+ * This bug appears only on some systems.
+ * </ul>
+ * <p>
+ * <b>Reference.</b>
+ * For additional documentation,
+ * see <a href="https://introcs.cs.princeton.edu/15inout">Section 1.5</a> of
+ * <em>Computer Science: An Interdisciplinary Approach</em>
+ * by Robert Sedgewick and Kevin Wayne.
+ *
+ * @author Robert Sedgewick
+ * @author Kevin Wayne
+ */
 object StdDraw extends ActionListener with MouseListener with MouseMotionListener with KeyListener {
 
   /**
@@ -82,32 +481,32 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
    * Shade of blue used in <em>Introduction to Programming in Java</em>.
    * It is Pantone 300U. The RGB values are approximately (9, 90, 166).
    */
-  val BOOK_BLUE: Color = new Color(9, 90, 166)
+  val BOOK_BLUE = new Color(9, 90, 166)
 
   /**
    * Shade of light blue used in <em>Introduction to Programming in Java</em>.
    * The RGB values are approximately (103, 198, 243).
    */
-  val BOOK_LIGHT_BLUE: Color = new Color(103, 198, 243)
+  val BOOK_LIGHT_BLUE = new Color(103, 198, 243)
 
   /**
    * Shade of red used in <em>Algorithms, 4th edition</em>.
    * It is Pantone 1805U. The RGB values are approximately (150, 35, 31).
    */
-  val BOOK_RED: Color = new Color(150, 35, 31)
+  val BOOK_RED = new Color(150, 35, 31)
 
   /**
    * Shade of orange used in Princeton University's identity.
    * It is PMS 158. The RGB values are approximately (245, 128, 37).
    */
-  val PRINCETON_ORANGE: Color = new Color(245, 128, 37)
+  val PRINCETON_ORANGE = new Color(245, 128, 37)
 
   // default colors
   private val DEFAULT_PEN_COLOR = BLACK
   private val DEFAULT_CLEAR_COLOR = WHITE
 
   // current pen color
-  private var penColor: Color = _
+  private var penColor = _
 
   // default canvas size is DEFAULT_SIZE-by-DEFAULT_SIZE
   private val DEFAULT_SIZE = 512
@@ -143,19 +542,19 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
   private val DEFAULT_FONT = new Font("SansSerif", Font.PLAIN, 16)
 
   // current font
-  private var font: Font = _
+  private var font = _
 
   // double buffered graphics
-  private var offscreenImage: BufferedImage = _
-  private var onscreenImage: BufferedImage = _
-  private var offscreen: Graphics2D = _
-  private var onscreen: Graphics2D = _
+  private var offscreenImage = _
+  private var onscreenImage = _
+  private var offscreen = _
+  private var onscreen = _
 
   // singleton for callbacks: avoids generation of extra .class files
   private val std = StdDraw
 
   // the frame for drawing to the screen
-  private var frame: JFrame = _
+  private var frame = _
 
   // mouse state
   private var isMousePress = false
@@ -227,7 +626,7 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
     frame.setVisible(true)
   }
 
-  private def createMenuBar(): JMenuBar = {
+  private def createMenuBar() = {
     val menuBar = new JMenuBar
     val menu = new JMenu("file")
     menuBar.add(menu)
@@ -782,8 +1181,8 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
 
   /**
    * Disables double buffering. All subsequent calls to
-   * drawing methods such as {@code line()}, {@code circle()},
-   * and {@code square()} will be displayed on screen when called.
+   * drawing methods such as `line()`, `circle()`,
+   * and `square()` will be displayed on screen when called.
    * This is the default.
    */
   def disableDoubleBuffering(): Unit = {
@@ -793,22 +1192,20 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
   /**
    * Saves the drawing to using the specified filename.
    * The supported image formats are JPEG and PNG;
-   * the filename suffix must be {@code .jpg} or {@code .png}.
+   * the filename suffix must be `.jpg` or `.png`.
    *
    * @param  filename the name of the file with one of the required suffixes
-   * @throws IllegalArgumentException if { @code filename} is { @code null}
+   * @throws IllegalArgumentException if `filename` is `null`
    */
   def save(filename: String): Unit = {
     validateNotNull(filename, "filename")
     val file = new File(filename)
     val suffix = filename.substring(filename.lastIndexOf('.') + 1)
     // png files
-    if ("png".equalsIgnoreCase(suffix)) {
-      try ImageIO.write(onscreenImage, suffix, file)
-      catch {
-        case e: IOException =>
-          e.printStackTrace()
-      }
+    if ("png".equalsIgnoreCase(suffix)) try ImageIO.write(onscreenImage, suffix, file)
+    catch {
+      case e: IOException =>
+        e.printStackTrace()
     } else {
       // need to change from ARGB to RGB for JPEG
       // reference: http://archives.java.sun.com/cgi-bin/wa?A2=ind0404&L=java2d-interest&D=0&P=2727
@@ -841,12 +1238,10 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
   /**
    * Returns true if the mouse is being pressed.
    *
-   * @return { @code true} if the mouse is being pressed; { @code false} otherwise
+   * @return `true` if the mouse is being pressed; `false` otherwise
    */
-  def isMousePressed: Boolean = {
-    mouseLock.synchronized {
-      isMousePress
-    }
+  def isMousePressed: Boolean = mouseLock.synchronized {
+    isMousePress
   }
 
   /**
@@ -854,10 +1249,8 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
    *
    * @return the <em>x</em>-coordinate of the mouse
    */
-  def mouseX(): Double = {
-    mouseLock synchronized {
-      mX
-    }
+  def mouseX(): Double = mouseLock synchronized {
+    mX
   }
 
   /**
@@ -865,10 +1258,8 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
    *
    * @return <em>y</em>-coordinate of the mouse
    */
-  def mouseY(): Double = {
-    mouseLock synchronized {
-      mY
-    }
+  def mouseY(): Double = mouseLock synchronized {
+    mY
   }
 
   override def mouseClicked(e: MouseEvent): Unit = {
@@ -915,25 +1306,19 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
    * Returns true if the user has typed a key (that has not yet been processed).
    *
    * @return { @code true} if the user has typed a key (that has not yet been processed
-   *         by { @link #nextKeyTyped()}; { @code false} otherwise
+   *         by [[StdDraw#nextKeyTyped]]; `false` otherwise
    */
-  def hasNextKeyTyped: Boolean = {
-    keyLock synchronized
-      !keysTyped.isEmpty
+  def hasNextKeyTyped: Boolean = keyLock synchronized
+    !keysTyped.isEmpty
+
+  def nextKeyTyped: Char = keyLock synchronized {
+    if (keysTyped.isEmpty) throw new NoSuchElementException("your program has already processed all keystrokes")
+    keysTyped.remove(keysTyped.size - 1)
+    // return keysTyped.removeLast();
   }
 
-  def nextKeyTyped: Char = {
-    keyLock synchronized {
-      if (keysTyped.isEmpty) throw new NoSuchElementException("your program has already processed all keystrokes")
-      keysTyped.remove(keysTyped.size - 1)
-      // return keysTyped.removeLast();
-    }
-  }
-
-  def isKeyPressed(keycode: Int): Boolean = {
-    keyLock.synchronized {
-      keysDown.contains(keycode)
-    }
+  def isKeyPressed(keycode: Int): Boolean = keyLock.synchronized {
+    keysDown.contains(keycode)
   }
 
   override def keyTyped(e: KeyEvent): Unit = {
