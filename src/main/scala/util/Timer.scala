@@ -46,6 +46,7 @@ object Timer {
     val a6 = a1.clone()
     val a7 = a1.clone()
     val a8 = a1.clone()
+    val a9 = a1.clone()
 
     val t1 = Timer.time(Quick.sort(a1), 0, 1)
     val t2 = Timer.time(Merge.sort(a2), 0, 1)
@@ -55,12 +56,14 @@ object Timer {
     val t6 = Timer.time(java.util.Arrays.sort(a6), 0, 1)
     val t7 = Timer.time(MergeX.sort(a7), 0, 1)
     val t8 = Timer.time(Quick3way.sort(a8), 0, 1)
+    val t9 = Timer.time(Heap.sort(a9), 0, 1)
     println(
       s"""
          |     quick   $t1
          | quick3way   $t8
          |     merge   $t2
          |    mergex   $t7
+         |      heap   $t9
          | selection   $t3
          | insertion   $t4
          |insertionx   $t5

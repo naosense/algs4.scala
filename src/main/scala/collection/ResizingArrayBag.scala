@@ -14,9 +14,7 @@ class ResizingArrayBag[E >: Null : ClassTag] extends Iterable[E] {
 
   private def resize(capacity: Int): Unit = {
     assert(capacity >= n)
-    val copy = new Array[E](capacity)
-    Array.copy(a, 0, copy, 0, n)
-    a = copy
+    a = Array.copyOf(a, capacity)
   }
 
   def add(e: E): Unit = {

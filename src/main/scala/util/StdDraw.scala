@@ -219,8 +219,8 @@ import javax.swing.{ImageIcon, JFrame, JLabel, JMenu, JMenuBar, JMenuItem, KeySt
  * code fragment sets the font to Arial Bold, 60 point.
  * <pre>
  * Font font = new Font("Arial", Font.BOLD, 60);
- *   StdDraw.setFont(font);
- *   StdDraw.text(0.5, 0.5, "Hello, World");
+ * StdDraw.setFont(font);
+ * StdDraw.text(0.5, 0.5, "Hello, World");
  * </pre>
  * <p>
  * <b>Images.</b>
@@ -586,8 +586,8 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
    * Ordinarly, this method is called once, at the very beginning
    * of a program.
    *
-   * @param  canvasWidth  the width as a number of pixels
-   * @param  canvasHeight the height as a number of pixels
+   * @param canvasWidth  the width as a number of pixels
+   * @param canvasHeight the height as a number of pixels
    * @throws IllegalArgumentException unless both `canvasWidth` and
    *                                  `canvasHeight` are positive
    */
@@ -696,8 +696,8 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
   /**
    * Sets the <em>x</em>-scale to the specified range.
    *
-   * @param  min the minimum value of the <em>x</em>-scale
-   * @param  max the maximum value of the <em>x</em>-scale
+   * @param min the minimum value of the <em>x</em>-scale
+   * @param max the maximum value of the <em>x</em>-scale
    * @throws IllegalArgumentException if `max==min`
    * @throws IllegalArgumentException if either `min` or `max` is either NaN or infinite
    */
@@ -715,8 +715,8 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
   /**
    * Sets the <em>y</em>-scale to the specified range.
    *
-   * @param  min the minimum value of the <em>y</em>-scale
-   * @param  max the maximum value of the <em>y</em>-scale
+   * @param min the minimum value of the <em>y</em>-scale
+   * @param max the maximum value of the <em>y</em>-scale
    * @throws IllegalArgumentException if `max==min`
    * @throws IllegalArgumentException if either `min` or `max` is either NaN or infinite
    */
@@ -788,7 +788,7 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
    * pen radius and draw a point, you get a circle of the specified radius.
    * The pen radius is not affected by coordinate scaling.
    *
-   * @param  radius the radius of the pen
+   * @param radius the radius of the pen
    * @throws IllegalArgumentException if `radius` is negative, NaN, or infinite
    */
   def setPenRadius(radius: Double): Unit = {
@@ -843,10 +843,10 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
    * Draws a line segment between (<em>x</em><sub>0</sub>, <em>y</em><sub>0</sub>) and
    * (<em>x</em><sub>1</sub>, <em>y</em><sub>1</sub>).
    *
-   * @param  x0 the <em>x</em>-coordinate of one endpoint
-   * @param  y0 the <em>y</em>-coordinate of one endpoint
-   * @param  x1 the <em>x</em>-coordinate of the other endpoint
-   * @param  y1 the <em>y</em>-coordinate of the other endpoint
+   * @param x0 the <em>x</em>-coordinate of one endpoint
+   * @param y0 the <em>y</em>-coordinate of one endpoint
+   * @param x1 the <em>x</em>-coordinate of the other endpoint
+   * @param y1 the <em>y</em>-coordinate of the other endpoint
    * @throws IllegalArgumentException if any coordinate is either NaN or infinite
    */
   def line(x0: Double, y0: Double, x1: Double, y1: Double): Unit = {
@@ -863,8 +863,8 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
    * This method is private because pixels depend on the display.
    * To achieve the same effect, set the pen radius to 0 and call `point()`.
    *
-   * @param  x the <em>x</em>-coordinate of the pixel
-   * @param  y the <em>y</em>-coordinate of the pixel
+   * @param x the <em>x</em>-coordinate of the pixel
+   * @param y the <em>y</em>-coordinate of the pixel
    * @throws IllegalArgumentException if `x` or `y` is either NaN or infinite
    */
   private def pixel(x: Double, y: Double): Unit = {
@@ -904,9 +904,9 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
   /**
    * Draws a circle of the specified radius, centered at (<em>x</em>, <em>y</em>).
    *
-   * @param  x      the <em>x</em>-coordinate of the center of the circle
-   * @param  y      the <em>y</em>-coordinate of the center of the circle
-   * @param  radius the radius of the circle
+   * @param x      the <em>x</em>-coordinate of the center of the circle
+   * @param y      the <em>y</em>-coordinate of the center of the circle
+   * @param radius the radius of the circle
    * @throws IllegalArgumentException if `radius` is negative
    * @throws IllegalArgumentException if any argument is either NaN or infinite
    */
@@ -933,13 +933,13 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
   /**
    * Draws a filled circle of the specified radius, centered at (<em>x</em>, <em>y</em>).
    *
-   * @param  x      the <em>x</em>-coordinate of the center of the circle
-   * @param  y      the <em>y</em>-coordinate of the center of the circle
-   * @param  radius the radius of the circle
+   * @param x      the <em>x</em>-coordinate of the center of the circle
+   * @param y      the <em>y</em>-coordinate of the center of the circle
+   * @param radius the radius of the circle
    * @throws IllegalArgumentException if `radius` is negative
    * @throws IllegalArgumentException if any argument is either NaN or infinite
    */
-  def fillCircle(x: Double, y: Double, radius: Double): Unit = {
+  def filledCircle(x: Double, y: Double, radius: Double): Unit = {
     validate(x, "x")
     validate(y, "y")
     validate(radius, "radius")
@@ -963,10 +963,10 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
    * Draws an ellipse with the specified semimajor and semiminor axes,
    * centered at (<em>x</em>, <em>y</em>).
    *
-   * @param  x             the <em>x</em>-coordinate of the center of the ellipse
-   * @param  y             the <em>y</em>-coordinate of the center of the ellipse
-   * @param  semiMajorAxis is the semimajor axis of the ellipse
-   * @param  semiMinorAxis is the semiminor axis of the ellipse
+   * @param x             the <em>x</em>-coordinate of the center of the ellipse
+   * @param y             the <em>y</em>-coordinate of the center of the ellipse
+   * @param semiMajorAxis is the semimajor axis of the ellipse
+   * @param semiMinorAxis is the semiminor axis of the ellipse
    * @throws IllegalArgumentException if either `semiMajorAxis`
    *                                  or `semiMinorAxis` is negative
    * @throws IllegalArgumentException if any argument is either NaN or infinite
@@ -992,10 +992,10 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
    * Draws a filled ellipse with the specified semimajor and semiminor axes,
    * centered at (<em>x</em>, <em>y</em>).
    *
-   * @param  x             the <em>x</em>-coordinate of the center of the ellipse
-   * @param  y             the <em>y</em>-coordinate of the center of the ellipse
-   * @param  semiMajorAxis is the semimajor axis of the ellipse
-   * @param  semiMinorAxis is the semiminor axis of the ellipse
+   * @param x             the <em>x</em>-coordinate of the center of the ellipse
+   * @param y             the <em>y</em>-coordinate of the center of the ellipse
+   * @param semiMajorAxis is the semimajor axis of the ellipse
+   * @param semiMinorAxis is the semiminor axis of the ellipse
    * @throws IllegalArgumentException if either `semiMajorAxis`
    *                                  or `semiMinorAxis` is negative
    * @throws IllegalArgumentException if any argument is either NaN or infinite
@@ -1020,12 +1020,12 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
    * Draws a circular arc of the specified radius,
    * centered at (<em>x</em>, <em>y</em>), from angle1 to angle2 (in degrees).
    *
-   * @param  x      the <em>x</em>-coordinate of the center of the circle
-   * @param  y      the <em>y</em>-coordinate of the center of the circle
-   * @param  radius the radius of the circle
-   * @param  angle1 the starting angle. 0 would mean an arc beginning at 3 o'clock.
-   * @param  angle2 the angle at the end of the arc. For example, if
-   *                you want a 90 degree arc, then angle2 should be angle1 + 90.
+   * @param x      the <em>x</em>-coordinate of the center of the circle
+   * @param y      the <em>y</em>-coordinate of the center of the circle
+   * @param radius the radius of the circle
+   * @param angle1 the starting angle. 0 would mean an arc beginning at 3 o'clock.
+   * @param angle2 the angle at the end of the arc. For example, if
+   *               you want a 90 degree arc, then angle2 should be angle1 + 90.
    * @throws IllegalArgumentException if `radius` is negative
    * @throws IllegalArgumentException if any argument is either NaN or infinite
    */
@@ -1050,9 +1050,9 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
   /**
    * Draws a square of the specified size, centered at (<em>x</em>, <em>y</em>).
    *
-   * @param  x          the <em>x</em>-coordinate of the center of the square
-   * @param  y          the <em>y</em>-coordinate of the center of the square
-   * @param  halfLength one half the length of any side of the square
+   * @param x          the <em>x</em>-coordinate of the center of the square
+   * @param y          the <em>y</em>-coordinate of the center of the square
+   * @param halfLength one half the length of any side of the square
    * @throws IllegalArgumentException if `halfLength` is negative
    * @throws IllegalArgumentException if any argument is either NaN or infinite
    */
@@ -1073,9 +1073,9 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
   /**
    * Draws a filled square of the specified size, centered at (<em>x</em>, <em>y</em>).
    *
-   * @param  x          the <em>x</em>-coordinate of the center of the square
-   * @param  y          the <em>y</em>-coordinate of the center of the square
-   * @param  halfLength one half the length of any side of the square
+   * @param x          the <em>x</em>-coordinate of the center of the square
+   * @param y          the <em>y</em>-coordinate of the center of the square
+   * @param halfLength one half the length of any side of the square
    * @throws IllegalArgumentException if `halfLength` is negative
    * @throws IllegalArgumentException if any argument is either NaN or infinite
    */
@@ -1096,10 +1096,10 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
   /**
    * Draws a rectangle of the specified size, centered at (<em>x</em>, <em>y</em>).
    *
-   * @param  x          the <em>x</em>-coordinate of the center of the rectangle
-   * @param  y          the <em>y</em>-coordinate of the center of the rectangle
-   * @param  halfWidth  one half the width of the rectangle
-   * @param  halfHeight one half the height of the rectangle
+   * @param x          the <em>x</em>-coordinate of the center of the rectangle
+   * @param y          the <em>y</em>-coordinate of the center of the rectangle
+   * @param halfWidth  one half the width of the rectangle
+   * @param halfHeight one half the height of the rectangle
    * @throws IllegalArgumentException if either `halfWidth` or `halfHeight` is negative
    * @throws IllegalArgumentException if any argument is either NaN or infinite
    */
@@ -1122,10 +1122,10 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
   /**
    * Draws a filled rectangle of the specified size, centered at (<em>x</em>, <em>y</em>).
    *
-   * @param  x          the <em>x</em>-coordinate of the center of the rectangle
-   * @param  y          the <em>y</em>-coordinate of the center of the rectangle
-   * @param  halfWidth  one half the width of the rectangle
-   * @param  halfHeight one half the height of the rectangle
+   * @param x          the <em>x</em>-coordinate of the center of the rectangle
+   * @param y          the <em>y</em>-coordinate of the center of the rectangle
+   * @param halfWidth  one half the width of the rectangle
+   * @param halfHeight one half the height of the rectangle
    * @throws IllegalArgumentException if either `halfWidth` or `halfHeight` is negative
    * @throws IllegalArgumentException if any argument is either NaN or infinite
    */
@@ -1151,8 +1151,8 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
    * (<em>x</em><sub>1</sub>, <em>y</em><sub>1</sub>), ...,
    * (<em>x</em><sub><em>n</em>–1</sub>, <em>y</em><sub><em>n</em>–1</sub>).
    *
-   * @param  x an array of all the <em>x</em>-coordinates of the polygon
-   * @param  y an array of all the <em>y</em>-coordinates of the polygon
+   * @param x an array of all the <em>x</em>-coordinates of the polygon
+   * @param y an array of all the <em>y</em>-coordinates of the polygon
    * @throws IllegalArgumentException unless `x[]` and `y[]`
    *                                  are of the same length
    * @throws IllegalArgumentException if any coordinate is either NaN or infinite
@@ -1182,8 +1182,8 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
    * (<em>x</em><sub>1</sub>, <em>y</em><sub>1</sub>), ...,
    * (<em>x</em><sub><em>n</em>–1</sub>, <em>y</em><sub><em>n</em>–1</sub>).
    *
-   * @param  x an array of all the <em>x</em>-coordinates of the polygon
-   * @param  y an array of all the <em>y</em>-coordinates of the polygon
+   * @param x an array of all the <em>x</em>-coordinates of the polygon
+   * @param y an array of all the <em>y</em>-coordinates of the polygon
    * @throws IllegalArgumentException unless `x[]` and `y[]`
    *                                  are of the same length
    * @throws IllegalArgumentException if any coordinate is either NaN or infinite
@@ -1243,9 +1243,9 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
    * However, if you change the picture file after drawing it, subsequent
    * calls will draw the original picture.
    *
-   * @param  x        the center <em>x</em>-coordinate of the image
-   * @param  y        the center <em>y</em>-coordinate of the image
-   * @param  filename the name of the image/picture, e.g., "ball.gif"
+   * @param x        the center <em>x</em>-coordinate of the image
+   * @param y        the center <em>y</em>-coordinate of the image
+   * @param filename the name of the image/picture, e.g., "ball.gif"
    * @throws IllegalArgumentException if the image filename is invalid
    * @throws IllegalArgumentException if either `x` or `y` is either NaN or infinite
    */
@@ -1271,10 +1271,10 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
    * rotated given number of degrees.
    * The supported image formats are JPEG, PNG, and GIF.
    *
-   * @param  x        the center <em>x</em>-coordinate of the image
-   * @param  y        the center <em>y</em>-coordinate of the image
-   * @param  filename the name of the image/picture, e.g., "ball.gif"
-   * @param  degrees  is the number of degrees to rotate counterclockwise
+   * @param x        the center <em>x</em>-coordinate of the image
+   * @param y        the center <em>y</em>-coordinate of the image
+   * @param filename the name of the image/picture, e.g., "ball.gif"
+   * @param degrees  is the number of degrees to rotate counterclockwise
    * @throws IllegalArgumentException if the image filename is invalid
    * @throws IllegalArgumentException if `x`, `y`, `degrees` is NaN or infinite
    * @throws IllegalArgumentException if `filename` is `null`
@@ -1304,11 +1304,11 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
    * rescaled to the specified bounding box.
    * The supported image formats are JPEG, PNG, and GIF.
    *
-   * @param  x            the center <em>x</em>-coordinate of the image
-   * @param  y            the center <em>y</em>-coordinate of the image
-   * @param  filename     the name of the image/picture, e.g., "ball.gif"
-   * @param  scaledWidth  the width of the scaled image (in screen coordinates)
-   * @param  scaledHeight the height of the scaled image (in screen coordinates)
+   * @param x            the center <em>x</em>-coordinate of the image
+   * @param y            the center <em>y</em>-coordinate of the image
+   * @param filename     the name of the image/picture, e.g., "ball.gif"
+   * @param scaledWidth  the width of the scaled image (in screen coordinates)
+   * @param scaledHeight the height of the scaled image (in screen coordinates)
    * @throws IllegalArgumentException if either `scaledWidth`
    *                                  or `scaledHeight` is negative
    * @throws IllegalArgumentException if the image filename is invalid
@@ -1339,12 +1339,12 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
    * given number of degrees, and rescaled to the specified bounding box.
    * The supported image formats are JPEG, PNG, and GIF.
    *
-   * @param  x            the center <em>x</em>-coordinate of the image
-   * @param  y            the center <em>y</em>-coordinate of the image
-   * @param  filename     the name of the image/picture, e.g., "ball.gif"
-   * @param  scaledWidth  the width of the scaled image (in screen coordinates)
-   * @param  scaledHeight the height of the scaled image (in screen coordinates)
-   * @param  degrees      is the number of degrees to rotate counterclockwise
+   * @param x            the center <em>x</em>-coordinate of the image
+   * @param y            the center <em>y</em>-coordinate of the image
+   * @param filename     the name of the image/picture, e.g., "ball.gif"
+   * @param scaledWidth  the width of the scaled image (in screen coordinates)
+   * @param scaledHeight the height of the scaled image (in screen coordinates)
+   * @param degrees      is the number of degrees to rotate counterclockwise
    * @throws IllegalArgumentException if either `scaledWidth`
    *                                  or `scaledHeight` is negative
    * @throws IllegalArgumentException if the image filename is invalid
@@ -1374,9 +1374,9 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
   /**
    * Writes the given text string in the current font, centered at (<em>x</em>, <em>y</em>).
    *
-   * @param  x    the center <em>x</em>-coordinate of the text
-   * @param  y    the center <em>y</em>-coordinate of the text
-   * @param  text the text to write
+   * @param x    the center <em>x</em>-coordinate of the text
+   * @param y    the center <em>y</em>-coordinate of the text
+   * @param text the text to write
    * @throws IllegalArgumentException if `text` is `null`
    * @throws IllegalArgumentException if `x` or `y` is either NaN or infinite
    */
@@ -1398,10 +1398,10 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
    * Writes the given text string in the current font, centered at (<em>x</em>, <em>y</em>) and
    * rotated by the specified number of degrees.
    *
-   * @param  x       the center <em>x</em>-coordinate of the text
-   * @param  y       the center <em>y</em>-coordinate of the text
-   * @param  t       the text to write
-   * @param  degrees is the number of degrees to rotate counterclockwise
+   * @param x       the center <em>x</em>-coordinate of the text
+   * @param y       the center <em>y</em>-coordinate of the text
+   * @param t       the text to write
+   * @param degrees is the number of degrees to rotate counterclockwise
    * @throws IllegalArgumentException if `t` is `null`
    * @throws IllegalArgumentException if `x`, `y`, or `degrees` is either NaN or infinite
    */
@@ -1420,9 +1420,9 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
   /**
    * Writes the given text string in the current font, left-aligned at (<em>x</em>, <em>y</em>).
    *
-   * @param  x    the <em>x</em>-coordinate of the text
-   * @param  y    the <em>y</em>-coordinate of the text
-   * @param  text the text
+   * @param x    the <em>x</em>-coordinate of the text
+   * @param y    the <em>y</em>-coordinate of the text
+   * @param text the text
    * @throws IllegalArgumentException if `text` is `null`
    * @throws IllegalArgumentException if `x` or `y` is either NaN or infinite
    */
@@ -1442,9 +1442,9 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
   /**
    * Writes the given text string in the current font, right-aligned at (<em>x</em>, <em>y</em>).
    *
-   * @param  x    the <em>x</em>-coordinate of the text
-   * @param  y    the <em>y</em>-coordinate of the text
-   * @param  text the text to write
+   * @param x    the <em>x</em>-coordinate of the text
+   * @param y    the <em>y</em>-coordinate of the text
+   * @param text the text to write
    * @throws IllegalArgumentException if `text` is `null`
    * @throws IllegalArgumentException if `x` or `y` is either NaN or infinite
    */
@@ -1515,7 +1515,7 @@ object StdDraw extends ActionListener with MouseListener with MouseMotionListene
    * The supported image formats are JPEG and PNG;
    * the filename suffix must be `.jpg` or `.png`.
    *
-   * @param  filename the name of the file with one of the required suffixes
+   * @param filename the name of the file with one of the required suffixes
    * @throws IllegalArgumentException if `filename` is `null`
    */
   def save(filename: String): Unit = {

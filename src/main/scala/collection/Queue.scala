@@ -19,7 +19,7 @@ class Queue[E] extends Iterable[E] {
     lst = Elm(e, End)
     if (isEmpty) fst = lst
     else oldlast.asInstanceOf[Elm].next = lst
-    n = n + 1
+    n += 1
   }
 
   def dequeue(): E = {
@@ -28,7 +28,7 @@ class Queue[E] extends Iterable[E] {
     }
     fst = fst.asInstanceOf[Elm].next
     if (isEmpty) lst = End
-    n = n - 1
+    n -= 1
     item
   }
 

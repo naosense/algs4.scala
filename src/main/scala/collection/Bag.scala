@@ -3,7 +3,7 @@ package collection
 import java.util.NoSuchElementException
 
 class Bag[E] extends Iterable[E] {
-  trait Node
+  sealed trait Node
   case class Elm(e: E, next: Node) extends Node
   case object End extends Node
 
